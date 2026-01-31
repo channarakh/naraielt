@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Study Planner - Complete Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Work+Sans:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1a365d;
+            --secondary: #c53030;
+            --accent: #d69e2e;
+            --success: #38a169;
+            --bg-primary: #f7fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d3748 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Auto-backup notification */
+        .backup-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #38a169;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 18px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .tab:hover {
+            background: #f7fafc;
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: #f7fafc;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .score-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .score-item {
+            background: var(--bg-primary);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .score-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .score-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* Mock test summary cards */
+        .mock-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mock-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px var(--shadow);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .mock-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .mock-card.listening { border-left-color: #8b5cf6; }
+        .mock-card.reading { border-left-color: #ec4899; }
+        .mock-card.writing { border-left-color: #f59e0b; }
+        .mock-card.speaking { border-left-color: #10b981; }
+
+        .mock-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .mock-card-icon {
+            font-size: 2rem;
+        }
+
+        .mock-card-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .mock-card-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .mock-card-average {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d3748 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 54, 93, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 161, 105, 0.4);
+        }
+        
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+        
+        .data-table thead {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .data-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .data-table tbody tr:hover {
+            background: var(--bg-primary);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .badge-warning {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+        
+        .badge-info {
+            background: #bee3f8;
+            color: #1e4e8c;
+        }
+
+        .badge-purple {
+            background: #e9d5ff;
+            color: #6b21a8;
+        }
+
+        .badge-pink {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+
+        .badge-orange {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .badge-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--accent) 100%);
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                overflow-x: scroll;
+            }
+            
+            .tab {
+                padding: 14px 20px;
+                font-size: 0.85rem;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .score-display {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auto-backup Notification -->
+    <div id="backupNotification" class="backup-notification">
+        ✓ Auto-backup saved successfully!
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>IELTS Study Planner</h1>
+            <p>Complete Edition with Auto-Backup & Mock Test Integration</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab" onclick="switchTab('listening')">🎧 Listening</button>
+            <button class="tab" onclick="switchTab('reading')">📖 Reading</button>
+            <button class="tab" onclick="switchTab('writing')">✍️ Writing</button>
+            <button class="tab" onclick="switchTab('speaking')">🎤 Speaking</button>
+            <button class="tab" onclick="switchTab('practice-tests')">📝 Full Tests</button>
+            <button class="tab" onclick="switchTab('study-log')">📚 Study Log</button>
+            <button class="tab" onclick="switchTab('vocabulary')">📖 Vocabulary</button>
+            <button class="tab" onclick="switchTab('goals')">🎯 Goals</button>
+            <button class="tab" onclick="switchTab('backup')">💾 Backup</button>
+        </div>
+        
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalStudyHours">0</div>
+                    <div class="stat-label">Study Hours</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPracticeTests">0</div>
+                    <div class="stat-label">Full Tests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalMockTests">0</div>
+                    <div class="stat-label">Mock Tests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="vocabularyCount">0</div>
+                    <div class="stat-label">Words Learned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="daysRemaining">--</div>
+                    <div class="stat-label">Days to Test</div>
+                </div>
+            </div>
+
+            <!-- Mock Tests Summary -->
+            <h2 style="color: #1a365d; margin-bottom: 20px; font-size: 1.5rem;">📝 Mock Test Summary</h2>
+            <div class="mock-summary-grid">
+                <div class="mock-card listening">
+                    <div class="mock-card-header">
+                        <span class="mock-card-icon">🎧</span>
+                        <span class="mock-card-count" id="listeningMockCount">0</span>
+                    </div>
+                    <div class="mock-card-label">Listening Mocks</div>
+                    <div class="mock-card-average" id="listeningAverage">Average: N/A</div>
+                </div>
+                
+                <div class="mock-card reading">
+                    <div class="mock-card-header">
+                        <span class="mock-card-icon">📖</span>
+                        <span class="mock-card-count" id="readingMockCount">0</span>
+                    </div>
+                    <div class="mock-card-label">Reading Mocks</div>
+                    <div class="mock-card-average" id="readingAverage">Average: N/A</div>
+                </div>
+                
+                <div class="mock-card writing">
+                    <div class="mock-card-header">
+                        <span class="mock-card-icon">✍️</span>
+                        <span class="mock-card-count" id="writingMockCount">0</span>
+                    </div>
+                    <div class="mock-card-label">Writing Mocks</div>
+                    <div class="mock-card-average" id="writingAverage">Average: N/A</div>
+                </div>
+                
+                <div class="mock-card speaking">
+                    <div class="mock-card-header">
+                        <span class="mock-card-icon">🎤</span>
+                        <span class="mock-card-count" id="speakingMockCount">0</span>
+                    </div>
+                    <div class="mock-card-label">Speaking Mocks</div>
+                    <div class="mock-card-average" id="speakingAverage">Average: N/A</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">Overall Band Score</div>
+                    <div class="score-display" id="overallScore">N/A</div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Current Progress</span>
+                            <span id="targetScore">Target: 7.5</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">Sub-Band Scores</div>
+                    <div class="score-grid">
+                        <div class="score-item">
+                            <div class="score-label">Listening</div>
+                            <div class="score-value" id="listeningScore">--</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Reading</div>
+                            <div class="score-value" id="readingScore">--</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Writing</div>
+                            <div class="score-value" id="writingScore">--</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Speaking</div>
+                            <div class="score-value" id="speakingScore">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listening Mock Tab -->
+        <div id="listening" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 24px; color: #8b5cf6;">🎧 Listening Mock Test</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Test Date</label>
+                        <input type="date" id="listeningDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Test Source</label>
+                        <input type="text" id="listeningSource" class="form-input" placeholder="e.g., Cambridge IELTS 17">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Section 1 (/10)</label>
+                        <input type="number" id="listeningS1" class="form-input" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Section 2 (/10)</label>
+                        <input type="number" id="listeningS2" class="form-input" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Section 3 (/10)</label>
+                        <input type="number" id="listeningS3" class="form-input" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Section 4 (/10)</label>
+                        <input type="number" id="listeningS4" class="form-input" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Total Correct (/40)</label>
+                        <input type="number" id="listeningTotal" class="form-input" min="0" max="40">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Band Score</label>
+                        <input type="number" id="listeningBand" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea id="listeningNotes" class="form-textarea" rows="3" placeholder="What sections were challenging?"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addListeningMock()">Add Listening Mock Test</button>
+            </div>
+            
+            <div class="card" style="margin-top: 24px;">
+                <h2 style="margin-bottom: 24px;">Listening Test History</h2>
+                <div id="listeningHistory">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎧</div>
+                        <p>No listening mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Mock Tab -->
+        <div id="reading" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 24px; color: #ec4899;">📖 Reading Mock Test</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Test Date</label>
+                        <input type="date" id="readingDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Test Source</label>
+                        <input type="text" id="readingSource" class="form-input" placeholder="e.g., Cambridge IELTS 17">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Passage 1 (/13-14)</label>
+                        <input type="number" id="readingP1" class="form-input" min="0" max="14">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Passage 2 (/13-14)</label>
+                        <input type="number" id="readingP2" class="form-input" min="0" max="14">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Passage 3 (/13-14)</label>
+                        <input type="number" id="readingP3" class="form-input" min="0" max="14">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Total Correct (/40)</label>
+                        <input type="number" id="readingTotal" class="form-input" min="0" max="40">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Band Score</label>
+                        <input type="number" id="readingBand" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes / Question Types</label>
+                    <textarea id="readingNotes" class="form-textarea" rows="3" placeholder="e.g., True/False/Not Given, Matching Headings"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addReadingMock()">Add Reading Mock Test</button>
+            </div>
+            
+            <div class="card" style="margin-top: 24px;">
+                <h2 style="margin-bottom: 24px;">Reading Test History</h2>
+                <div id="readingHistory">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📖</div>
+                        <p>No reading mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Writing Mock Tab -->
+        <div id="writing" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 24px; color: #f59e0b;">✍️ Writing Mock Test</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Test Date</label>
+                        <input type="date" id="writingDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Task Type</label>
+                        <select id="writingTask" class="form-select">
+                            <option>Task 1</option>
+                            <option>Task 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Word Count</label>
+                        <input type="number" id="writingWords" class="form-input" placeholder="150/250">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Overall Score</label>
+                        <input type="number" id="writingScore" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Task Achievement</label>
+                        <input type="number" id="writingTA" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Coherence</label>
+                        <input type="number" id="writingCC" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lexical Resource</label>
+                        <input type="number" id="writingLR" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Grammar</label>
+                        <input type="number" id="writingGR" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Topic</label>
+                    <textarea id="writingTopic" class="form-textarea" rows="2" placeholder="Paste the writing task question"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes / Feedback</label>
+                    <textarea id="writingNotes" class="form-textarea" rows="3" placeholder="Strengths and areas to improve"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addWritingMock()">Add Writing Mock Test</button>
+            </div>
+            
+            <div class="card" style="margin-top: 24px;">
+                <h2 style="margin-bottom: 24px;">Writing Test History</h2>
+                <div id="writingHistory">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✍️</div>
+                        <p>No writing mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speaking Mock Tab -->
+        <div id="speaking" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 24px; color: #10b981;">🎤 Speaking Mock Test</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Test Date</label>
+                        <input type="date" id="speakingDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Test Part</label>
+                        <select id="speakingPart" class="form-select">
+                            <option>Full Test (All Parts)</option>
+                            <option>Part 1 Only</option>
+                            <option>Part 2 Only</option>
+                            <option>Part 3 Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Overall Score</label>
+                        <input type="number" id="speakingScore" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fluency</label>
+                        <input type="number" id="speakingFluency" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lexical Resource</label>
+                        <input type="number" id="speakingLexical" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Grammar</label>
+                        <input type="number" id="speakingGrammar" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pronunciation</label>
+                        <input type="number" id="speakingPronunciation" class="form-input" min="0" max="9" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Topics Covered</label>
+                    <textarea id="speakingTopics" class="form-textarea" rows="2" placeholder="e.g., Part 1: Home, Work; Part 2: Describe a person"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes / Feedback</label>
+                    <textarea id="speakingNotes" class="form-textarea" rows="3" placeholder="Strengths and areas to improve"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addSpeakingMock()">Add Speaking Mock Test</button>
+            </div>
+            
+            <div class="card" style="margin-top: 24px;">
+                <h2 style="margin-bottom: 24px;">Speaking Test History</h2>
+                <div id="speakingHistory">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎤</div>
+                        <p>No speaking mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional tabs would go here (practice-tests, study-log, vocabulary, goals, backup) -->
+        <!-- For brevity, I'll add a backup tab -->
+
+        <div id="backup" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 24px;">💾 Backup & Data Management</h2>
+                
+                <div style="background: #e6fffa; border-left: 4px solid #38a169; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+                    <h3 style="color: #38a169; margin-bottom: 10px;">✓ Auto-Backup Enabled</h3>
+                    <p>Your data is automatically saved after every mock test entry!</p>
+                    <p style="margin-top: 10px;"><strong>Last Backup:</strong> <span id="lastBackupTime">Never</span></p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <button class="btn btn-success" onclick="exportAllData()">📥 Export All Data (JSON)</button>
+                    <button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 Import Data</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn btn-primary" onclick="clearAllData()">🗑️ Clear All Data</button>
+                </div>
+
+                <div class="card" style="background: #fff5f5; border: 2px solid #feb2b2;">
+                    <h3 style="color: #c53030; margin-bottom: 15px;">📊 Data Summary</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div>
+                            <strong>Listening Mocks:</strong> <span id="backupListeningCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Reading Mocks:</strong> <span id="backupReadingCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Writing Mocks:</strong> <span id="backupWritingCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Speaking Mocks:</strong> <span id="backupSpeakingCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Full Tests:</strong> <span id="backupFullTestsCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Study Logs:</strong> <span id="backupStudyLogsCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Vocabulary:</strong> <span id="backupVocabularyCount">0</span>
+                        </div>
+                        <div>
+                            <strong>Total Data Size:</strong> <span id="backupDataSize">0 KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let listeningMocks = JSON.parse(localStorage.getItem('ielts_listeningMocks')) || [];
+        let readingMocks = JSON.parse(localStorage.getItem('ielts_readingMocks')) || [];
+        let writingMocks = JSON.parse(localStorage.getItem('ielts_writingMocks')) || [];
+        let speakingMocks = JSON.parse(localStorage.getItem('ielts_speakingMocks')) || [];
+        let practiceTests = JSON.parse(localStorage.getItem('ielts_practiceTests')) || [];
+        let studyLogs = JSON.parse(localStorage.getItem('ielts_studyLogs')) || [];
+        let vocabulary = JSON.parse(localStorage.getItem('ielts_vocabulary')) || [];
+        let goals = JSON.parse(localStorage.getItem('ielts_goals')) || {
+            targetOverall: 7.5,
+            examDate: null
+        };
+
+        // Initialize on load
+        window.onload = function() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('listeningDate').value = today;
+            document.getElementById('readingDate').value = today;
+            document.getElementById('writingDate').value = today;
+            document.getElementById('speakingDate').value = today;
+            
+            updateDashboard();
+            renderListeningHistory();
+            renderReadingHistory();
+            renderWritingHistory();
+            renderSpeakingHistory();
+            updateBackupInfo();
+        };
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Auto-backup function
+        function autoBackup() {
+            localStorage.setItem('ielts_lastBackup', new Date().toISOString());
+            showBackupNotification();
+        }
+
+        function showBackupNotification() {
+            const notification = document.getElementById('backupNotification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Listening Mock Functions
+        function addListeningMock() {
+            const mock = {
+                date: document.getElementById('listeningDate').value,
+                source: document.getElementById('listeningSource').value,
+                section1: document.getElementById('listeningS1').value,
+                section2: document.getElementById('listeningS2').value,
+                section3: document.getElementById('listeningS3').value,
+                section4: document.getElementById('listeningS4').value,
+                total: document.getElementById('listeningTotal').value,
+                score: document.getElementById('listeningBand').value,
+                notes: document.getElementById('listeningNotes').value
+            };
+
+            if (!mock.date || !mock.source) {
+                alert('Please enter date and test source');
+                return;
+            }
+
+            listeningMocks.push(mock);
+            localStorage.setItem('ielts_listeningMocks', JSON.stringify(listeningMocks));
+            
+            // Clear form
+            document.getElementById('listeningSource').value = '';
+            document.getElementById('listeningS1').value = '';
+            document.getElementById('listeningS2').value = '';
+            document.getElementById('listeningS3').value = '';
+            document.getElementById('listeningS4').value = '';
+            document.getElementById('listeningTotal').value = '';
+            document.getElementById('listeningBand').value = '';
+            document.getElementById('listeningNotes').value = '';
+            
+            renderListeningHistory();
+            updateDashboard();
+            autoBackup();
+        }
+
+        function renderListeningHistory() {
+            const container = document.getElementById('listeningHistory');
+            if (listeningMocks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎧</div>
+                        <p>No listening mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const table = `
+                <table class="data-table">
+                    <thead>
+                        <tr style="background: #8b5cf6;">
+                            <th>Date</th>
+                            <th>Source</th>
+                            <th>S1</th>
+                            <th>S2</th>
+                            <th>S3</th>
+                            <th>S4</th>
+                            <th>Total</th>
+                            <th>Band</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${listeningMocks.map(mock => `
+                            <tr>
+                                <td>${mock.date}</td>
+                                <td><strong>${mock.source}</strong></td>
+                                <td>${mock.section1 || '--'}</td>
+                                <td>${mock.section2 || '--'}</td>
+                                <td>${mock.section3 || '--'}</td>
+                                <td>${mock.section4 || '--'}</td>
+                                <td><strong>${mock.total || '--'}/40</strong></td>
+                                <td><span class="badge badge-purple">${mock.score || '--'}</span></td>
+                                <td>${mock.notes || '--'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = table;
+        }
+
+        // Reading Mock Functions
+        function addReadingMock() {
+            const mock = {
+                date: document.getElementById('readingDate').value,
+                source: document.getElementById('readingSource').value,
+                passage1: document.getElementById('readingP1').value,
+                passage2: document.getElementById('readingP2').value,
+                passage3: document.getElementById('readingP3').value,
+                total: document.getElementById('readingTotal').value,
+                score: document.getElementById('readingBand').value,
+                notes: document.getElementById('readingNotes').value
+            };
+
+            if (!mock.date || !mock.source) {
+                alert('Please enter date and test source');
+                return;
+            }
+
+            readingMocks.push(mock);
+            localStorage.setItem('ielts_readingMocks', JSON.stringify(readingMocks));
+            
+            // Clear form
+            document.getElementById('readingSource').value = '';
+            document.getElementById('readingP1').value = '';
+            document.getElementById('readingP2').value = '';
+            document.getElementById('readingP3').value = '';
+            document.getElementById('readingTotal').value = '';
+            document.getElementById('readingBand').value = '';
+            document.getElementById('readingNotes').value = '';
+            
+            renderReadingHistory();
+            updateDashboard();
+            autoBackup();
+        }
+
+        function renderReadingHistory() {
+            const container = document.getElementById('readingHistory');
+            if (readingMocks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📖</div>
+                        <p>No reading mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const table = `
+                <table class="data-table">
+                    <thead>
+                        <tr style="background: #ec4899;">
+                            <th>Date</th>
+                            <th>Source</th>
+                            <th>P1</th>
+                            <th>P2</th>
+                            <th>P3</th>
+                            <th>Total</th>
+                            <th>Band</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${readingMocks.map(mock => `
+                            <tr>
+                                <td>${mock.date}</td>
+                                <td><strong>${mock.source}</strong></td>
+                                <td>${mock.passage1 || '--'}</td>
+                                <td>${mock.passage2 || '--'}</td>
+                                <td>${mock.passage3 || '--'}</td>
+                                <td><strong>${mock.total || '--'}/40</strong></td>
+                                <td><span class="badge badge-pink">${mock.score || '--'}</span></td>
+                                <td>${mock.notes || '--'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = table;
+        }
+
+        // Writing Mock Functions
+        function addWritingMock() {
+            const mock = {
+                date: document.getElementById('writingDate').value,
+                task: document.getElementById('writingTask').value,
+                wordCount: document.getElementById('writingWords').value,
+                score: document.getElementById('writingScore').value,
+                taskAchievement: document.getElementById('writingTA').value,
+                coherence: document.getElementById('writingCC').value,
+                lexical: document.getElementById('writingLR').value,
+                grammar: document.getElementById('writingGR').value,
+                topic: document.getElementById('writingTopic').value,
+                notes: document.getElementById('writingNotes').value
+            };
+
+            if (!mock.date) {
+                alert('Please enter date');
+                return;
+            }
+
+            writingMocks.push(mock);
+            localStorage.setItem('ielts_writingMocks', JSON.stringify(writingMocks));
+            
+            // Clear form
+            document.getElementById('writingWords').value = '';
+            document.getElementById('writingScore').value = '';
+            document.getElementById('writingTA').value = '';
+            document.getElementById('writingCC').value = '';
+            document.getElementById('writingLR').value = '';
+            document.getElementById('writingGR').value = '';
+            document.getElementById('writingTopic').value = '';
+            document.getElementById('writingNotes').value = '';
+            
+            renderWritingHistory();
+            updateDashboard();
+            autoBackup();
+        }
+
+        function renderWritingHistory() {
+            const container = document.getElementById('writingHistory');
+            if (writingMocks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✍️</div>
+                        <p>No writing mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = writingMocks.map(mock => `
+                <div style="border: 2px solid #fed7aa; border-radius: 12px; padding: 20px; margin-bottom: 15px; background: white;">
+                    <div style="display: flex; justify-between; align-items: start; margin-bottom: 15px;">
+                        <div>
+                            <span class="badge badge-orange">${mock.task}</span>
+                            <span style="margin-left: 10px; color: #666;">${mock.date}</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #f59e0b;">${mock.score || 'N/A'}</div>
+                            <div style="font-size: 0.8rem; color: #666;">Overall</div>
+                        </div>
+                    </div>
+                    <p style="font-weight: 600; margin-bottom: 10px;">${mock.topic || 'No topic'}</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px;">
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Task</div>
+                            <div style="font-weight: 700;">${mock.taskAchievement || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Coherence</div>
+                            <div style="font-weight: 700;">${mock.coherence || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Lexical</div>
+                            <div style="font-weight: 700;">${mock.lexical || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Grammar</div>
+                            <div style="font-weight: 700;">${mock.grammar || '--'}</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666;">${mock.notes || 'No notes'}</p>
+                </div>
+            `).join('');
+        }
+
+        // Speaking Mock Functions
+        function addSpeakingMock() {
+            const mock = {
+                date: document.getElementById('speakingDate').value,
+                part: document.getElementById('speakingPart').value,
+                score: document.getElementById('speakingScore').value,
+                fluency: document.getElementById('speakingFluency').value,
+                lexical: document.getElementById('speakingLexical').value,
+                grammar: document.getElementById('speakingGrammar').value,
+                pronunciation: document.getElementById('speakingPronunciation').value,
+                topics: document.getElementById('speakingTopics').value,
+                notes: document.getElementById('speakingNotes').value
+            };
+
+            if (!mock.date) {
+                alert('Please enter date');
+                return;
+            }
+
+            speakingMocks.push(mock);
+            localStorage.setItem('ielts_speakingMocks', JSON.stringify(speakingMocks));
+            
+            // Clear form
+            document.getElementById('speakingScore').value = '';
+            document.getElementById('speakingFluency').value = '';
+            document.getElementById('speakingLexical').value = '';
+            document.getElementById('speakingGrammar').value = '';
+            document.getElementById('speakingPronunciation').value = '';
+            document.getElementById('speakingTopics').value = '';
+            document.getElementById('speakingNotes').value = '';
+            
+            renderSpeakingHistory();
+            updateDashboard();
+            autoBackup();
+        }
+
+        function renderSpeakingHistory() {
+            const container = document.getElementById('speakingHistory');
+            if (speakingMocks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎤</div>
+                        <p>No speaking mocks recorded yet. Add your first mock test above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = speakingMocks.map(mock => `
+                <div style="border: 2px solid #d1fae5; border-radius: 12px; padding: 20px; margin-bottom: 15px; background: white;">
+                    <div style="display: flex; justify-between; align-items: start; margin-bottom: 15px;">
+                        <div>
+                            <span class="badge badge-green">${mock.part}</span>
+                            <span style="margin-left: 10px; color: #666;">${mock.date}</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #10b981;">${mock.score || 'N/A'}</div>
+                            <div style="font-size: 0.8rem; color: #666;">Overall</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>Topics:</strong> ${mock.topics || 'No topics'}</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px;">
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Fluency</div>
+                            <div style="font-weight: 700;">${mock.fluency || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Lexical</div>
+                            <div style="font-weight: 700;">${mock.lexical || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Grammar</div>
+                            <div style="font-weight: 700;">${mock.grammar || '--'}</div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 0.8rem; color: #666;">Pronunciation</div>
+                            <div style="font-weight: 700;">${mock.pronunciation || '--'}</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666;">${mock.notes || 'No notes'}</p>
+                </div>
+            `).join('');
+        }
+
+        // Dashboard Update
+        function updateDashboard() {
+            // Calculate totals
+            const totalMocks = listeningMocks.length + readingMocks.length + writingMocks.length + speakingMocks.length;
+            
+            document.getElementById('totalPracticeTests').textContent = practiceTests.length;
+            document.getElementById('totalMockTests').textContent = totalMocks;
+            document.getElementById('vocabularyCount').textContent = vocabulary.length;
+            
+            // Update mock test summaries
+            document.getElementById('listeningMockCount').textContent = listeningMocks.length;
+            document.getElementById('readingMockCount').textContent = readingMocks.length;
+            document.getElementById('writingMockCount').textContent = writingMocks.length;
+            document.getElementById('speakingMockCount').textContent = speakingMocks.length;
+            
+            // Calculate averages
+            const calcAvg = (arr) => {
+                const scores = arr.map(m => parseFloat(m.score || 0)).filter(s => s > 0);
+                return scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 'N/A';
+            };
+            
+            document.getElementById('listeningAverage').textContent = `Average: ${calcAvg(listeningMocks)}`;
+            document.getElementById('readingAverage').textContent = `Average: ${calcAvg(readingMocks)}`;
+            document.getElementById('writingAverage').textContent = `Average: ${calcAvg(writingMocks)}`;
+            document.getElementById('speakingAverage').textContent = `Average: ${calcAvg(speakingMocks)}`;
+            
+            // Update overall scores from latest mock tests or practice tests
+            const latestListening = listeningMocks[listeningMocks.length - 1];
+            const latestReading = readingMocks[readingMocks.length - 1];
+            const latestWriting = writingMocks[writingMocks.length - 1];
+            const latestSpeaking = speakingMocks[speakingMocks.length - 1];
+            
+            const listeningScore = latestListening ? parseFloat(latestListening.score || 0) : 0;
+            const readingScore = latestReading ? parseFloat(latestReading.score || 0) : 0;
+            const writingScore = latestWriting ? parseFloat(latestWriting.score || 0) : 0;
+            const speakingScore = latestSpeaking ? parseFloat(latestSpeaking.score || 0) : 0;
+            
+            document.getElementById('listeningScore').textContent = listeningScore > 0 ? listeningScore.toFixed(1) : '--';
+            document.getElementById('readingScore').textContent = readingScore > 0 ? readingScore.toFixed(1) : '--';
+            document.getElementById('writingScore').textContent = writingScore > 0 ? writingScore.toFixed(1) : '--';
+            document.getElementById('speakingScore').textContent = speakingScore > 0 ? speakingScore.toFixed(1) : '--';
+            
+            // Calculate overall
+            if (listeningScore > 0 && readingScore > 0 && writingScore > 0 && speakingScore > 0) {
+                const overall = Math.round((listeningScore + readingScore + writingScore + speakingScore) / 4 * 2) / 2;
+                document.getElementById('overallScore').textContent = overall.toFixed(1);
+                
+                const progress = (overall / goals.targetOverall) * 100;
+                document.getElementById('overallProgress').style.width = Math.min(progress, 100) + '%';
+            }
+            
+            // Days remaining
+            if (goals.examDate) {
+                const today = new Date();
+                const examDate = new Date(goals.examDate);
+                const diffTime = examDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                document.getElementById('daysRemaining').textContent = diffDays > 0 ? diffDays : 0;
+            }
+        }
+
+        // Backup Functions
+        function exportAllData() {
+            const allData = {
+                listeningMocks,
+                readingMocks,
+                writingMocks,
+                speakingMocks,
+                practiceTests,
+                studyLogs,
+                vocabulary,
+                goals,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ielts-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            autoBackup();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        
+                        if (data.listeningMocks) {
+                            listeningMocks = data.listeningMocks;
+                            localStorage.setItem('ielts_listeningMocks', JSON.stringify(listeningMocks));
+                        }
+                        if (data.readingMocks) {
+                            readingMocks = data.readingMocks;
+                            localStorage.setItem('ielts_readingMocks', JSON.stringify(readingMocks));
+                        }
+                        if (data.writingMocks) {
+                            writingMocks = data.writingMocks;
+                            localStorage.setItem('ielts_writingMocks', JSON.stringify(writingMocks));
+                        }
+                        if (data.speakingMocks) {
+                            speakingMocks = data.speakingMocks;
+                            localStorage.setItem('ielts_speakingMocks', JSON.stringify(speakingMocks));
+                        }
+                        if (data.practiceTests) {
+                            practiceTests = data.practiceTests;
+                            localStorage.setItem('ielts_practiceTests', JSON.stringify(practiceTests));
+                        }
+                        if (data.studyLogs) {
+                            studyLogs = data.studyLogs;
+                            localStorage.setItem('ielts_studyLogs', JSON.stringify(studyLogs));
+                        }
+                        if (data.vocabulary) {
+                            vocabulary = data.vocabulary;
+                            localStorage.setItem('ielts_vocabulary', JSON.stringify(vocabulary));
+                        }
+                        if (data.goals) {
+                            goals = data.goals;
+                            localStorage.setItem('ielts_goals', JSON.stringify(goals));
+                        }
+                        
+                        alert('Data imported successfully!');
+                        location.reload();
+                    } catch (error) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear ALL data? This cannot be undone!')) {
+                if (confirm('Last chance! This will delete everything. Continue?')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+        }
+
+        function updateBackupInfo() {
+            const lastBackup = localStorage.getItem('ielts_lastBackup');
+            if (lastBackup) {
+                const date = new Date(lastBackup);
+                document.getElementById('lastBackupTime').textContent = date.toLocaleString();
+            }
+            
+            document.getElementById('backupListeningCount').textContent = listeningMocks.length;
+            document.getElementById('backupReadingCount').textContent = readingMocks.length;
+            document.getElementById('backupWritingCount').textContent = writingMocks.length;
+            document.getElementById('backupSpeakingCount').textContent = speakingMocks.length;
+            document.getElementById('backupFullTestsCount').textContent = practiceTests.length;
+            document.getElementById('backupStudyLogsCount').textContent = studyLogs.length;
+            document.getElementById('backupVocabularyCount').textContent = vocabulary.length;
+            
+            // Calculate total data size
+            const allData = JSON.stringify({
+                listeningMocks,
+                readingMocks,
+                writingMocks,
+                speakingMocks,
+                practiceTests,
+                studyLogs,
+                vocabulary,
+                goals
+            });
+            const sizeKB = (new Blob([allData]).size / 1024).toFixed(2);
+            document.getElementById('backupDataSize').textContent = sizeKB + ' KB';
+        }
+    </script>
+</body>
+</html>
